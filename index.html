@@ -41,7 +41,7 @@
 
         try {
             // 1. Ambil data dari IP-API (Data Kasar)
-            const res = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,regionName,city,isp,query,lat,lon`);
+            const res = await fetch(`https://demo.ip-api.com/json/${ip}?fields=status,country,regionName,city,isp,query,lat,lon`);
             const dataIP = await res.json();
 
             if (dataIP.status === "fail") {

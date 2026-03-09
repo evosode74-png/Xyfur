@@ -1,4 +1,4 @@
-const { default: makeWASocket, useMultiFileAuthState } = require('@whiskeysockets/baileys');
+const { default: makeWASocket, useMultiFileAuthState, MessageType } = require('@whiskeysockets/baileys');
 const pino = require('pino');
 
 async function startXyfurBot() {
@@ -15,40 +15,84 @@ async function startXyfurBot() {
         const msg = m.messages[0];
         if (!msg.message || msg.key.fromMe) return;
 
-        const text = msg.message.conversation || msg.message.extendedTextMessage?.text || "";
         const from = msg.key.remoteJid;
-        const prefix = "."; // Kamu bisa ganti jadi ! atau #
+        const isGroup = from.endsWith('@g.us');
+        const text = msg.message.conversation || msg.message.extendedTextMessage?.text || "";
+        const command = text.toLowerCase().split(" ")[0];
+        const prefix = "."; 
+        
+        // --- [ CONFIG OWNER ] ---
+        const ownerNumber = "6285251271515@s.whatsapp.net"; // Nomor kamu
+        const isOwner = msg.key.participant === ownerNumber || from === ownerNumber;
 
-        if (text === prefix + 'menu') {
-            let menuText = `*───「 XYFUR BOT MENU 」───*
+        // --- [ ALL MENU LENGKAP ] ---
+        if (command === prefix + 'menu') {
+            let menu = `*───「 XYFUR AMNESIA V3 」───*
+*Owner:* @6285251271515
 
 *🛠️ TOOLS MENU*
-.bratt
-.ssweb
-.lacak (Fitur Lacak Desa kamu)
+${prefix}lacak (Tracking Desa)
+${prefix}ssweb [url]
+${prefix}hd (Upscale Foto)
+${prefix}stiker (Buat Stiker)
 
 *📥 DOWNLOAD MENU*
-.tiktok
-.instagram
-.ytmp4
+${prefix}tiktok [url]
+${prefix}ig [url]
+${prefix}ytmp4 [url]
+${prefix}facebook [url]
 
 *🏪 STORE MENU*
-.payment
-.prosess
-.done
+${prefix}listproduk
+${prefix}payment
+${prefix}proses
+${prefix}done
 
-Ketik *${prefix}help* untuk bantuan.`;
+*👥 GROUP MENU*
+${prefix}hidetag [teks]
+${prefix}kick @tag
+${prefix}add 62xxx
+${prefix}group [open/close]
 
-            await sock.sendMessage(from, { text: menuText });
+*🛡️ ADDPOTECT MENU*
+${prefix}antidelete (on/off)
+${prefix}antilink (on/off)
+
+*👤 OWNER MENU*
+${prefix}self (Mode Pribadi)
+${prefix}public (Mode Umum)
+${prefix}broadcast [teks]
+${prefix}setppbot (Ganti Foto Bot)
+
+Ketik *${prefix}owner* untuk hubungi admin.`;
+            
+            await sock.sendMessage(from, { text: menu, mentions: [ownerNumber] });
         }
 
-        // Contoh Fitur Download (Logika Sederhana)
-        if (text.startsWith(prefix + 'tiktok')) {
-            await sock.sendMessage(from, { text: 'Sedang mengunduh video... Tunggu bentar ya!' });
+        // --- [ FITUR OWNER ] ---
+        if (command === prefix + 'owner') {
+            const vcard = 'BEGIN:VCARD\n' 
+                + 'VERSION:3.0\n' 
+                + 'FN:XyFur Owner\n' 
+                + 'TEL;type=CELL;type=VOICE;waid=6285251271515:+62 852-5127-1515\n' 
+                + 'END:VCARD';
+            await sock.sendMessage(from, {
+                contacts: { displayName: 'XyFur Owner', contacts: [{ vcard }] }
+            });
+        }
+
+        if (command === prefix + 'broadcast' && isOwner) {
+            const bcText = text.slice(11);
+            await sock.sendMessage(from, { text: '📢 Mengirim Broadcast...' });
+            // Logika kirim ke semua chat bisa ditambah di sini
+        }
+
+        // --- [ FITUR STORE ] ---
+        if (command === prefix + 'payment') {
+            let p = `*💳 METODE PEMBAYARAN*\n\n*Dana:* 085251271515\n*OVO:* 085251271515\n*QRIS:* (Kirim Gambar QRIS)`;
+            await sock.sendMessage(from, { text: p });
         }
     });
-
-    console.log("Sistem Render Siap! Cek Log untuk Scan QR.");
 }
 
 startXyfurBot();

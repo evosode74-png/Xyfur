@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Story | Santana Vetuper</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Crimson+Pro:ital,wght@0,400;0,700;1,400&display=swap');
+
+        :root {
+            --bg: #0a0b0d;
+            --paper: #ffffff;
+            --accent: #2980b9;
+            --text-dim: #636e72;
+        }
+
+        body {
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+        }
+
+        .book-frame {
+            width: 95vw;
+            max-width: 1100px;
+            height: 85vh;
+            background: var(--paper);
+            border-radius: 8px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .book-header {
+            padding: 25px 50px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+        }
+
+        .book-header h1 {
+            margin: 0;
+            font-size: 11px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+
+        .author-info {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .page-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+
+        .page-slider::-webkit-scrollbar { display: none; }
+
+        .page {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px 60px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 38px;
+            margin: 0 0 5px 0;
+            color: #1a1a1a;
+        }
+
+        .chapter-subtitle {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--accent);
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .story-content {
+            font-family: 'Crimson Pro', serif;
+            font-size: 15.5px;
+            line-height: 2.3;
+            text-align: justify;
+            color: #2d3436;
+        }
+
+        .verification-layout {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .info-panel {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .data-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .data-box label {
+            display: block;
+            font-size: 9px;
+            color: #888;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .data-box span { font-weight: 600; color: #1a1a1a; }
+
+        .photo-panel {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .img-frame {
+            border: 1px solid #eee;
+            background: #fff;
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .img-frame label {
+            display: block;
+            font-size: 10px;
+            color: #aaa;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        .img-frame img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+        }
+
+        .nav-hint {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            font-size: 10px;
+            color: #bdc3c7;
+        }
+    </style>
+</head>
+<body>
+
+<div class="book-frame">
+    <div class="book-header">
+        <h1>Dossier Digital Record</h1>
+        <div class="author-info">BY: XyFurVetelz / Santana Vetuper</div>
+    </div>
+
+    <div class="nav-hint">GESER HALAMAN &rarr;</div>
+
+    <div class="page-slider">
+        <div class="page">
+            <span class="chapter-subtitle">Identity Verification</span>
+            <h2>Character Story</h2>
+            
+            <div class="verification-layout">
+                <div class="info-panel">
+                    <div class="data-box"><label>Character Name</label><span>Santana Vetuper</span></div>
+                    <div class="data-box"><label>Date of Birth</label><span>07 April 2006</span></div>
+                    <div class="data-box"><label>Current Age</label><span>19 Tahun 11 Bulan</span></div>
+                    <div class="data-box"><label>Birthplace</label><span>Los Santos</span></div>
+                </div>
+                
+                <div class="photo-panel">
+                    <div class="img-frame">
+                        <label>Identity Card</label>
+                        <img src="https://cdn.phototourl.com/uploads/2026-03-15-e8963b9d-4a5c-418d-8ed5-84323326bbb9.jpg" alt="ID Card Santana">
+                    </div>
+                    <div class="img-frame">
+                        <label>Statistics Record</label>
+                        <img src="https://cdn.phototourl.com/uploads/2026-03-15-b70a0a50-868e-4c6e-9060-d76827d38bb3.jpg" alt="Stats Santana">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page">
+            <span class="chapter-subtitle">Chapter I</span>
+            <h2>Early Life</h2>
+            <div class="story-content">
+                &nbsp;&nbsp;&nbsp;Santana Vetuper dilahirkan pada tanggal 07 April 2006 di sebuah rumah sakit pusat yang terletak di tengah keramaian kota Los Santos yang sangat padat. Kehidupan masa kecilnya sangat dipengaruhi oleh hiruk-pikuk lingkungan perkotaan yang keras, di mana ia tumbuh di sebuah apartemen kecil di kawasan pemukiman warga kelas menengah ke bawah. Ayahnya bekerja sebagai seorang sopir bus kota yang selalu berangkat saat matahari belum terbit, sedangkan ibunya membantu ekonomi keluarga dengan mengelola sebuah kedai makanan kecil di pinggiran jalan. Sejak kecil, Santana sudah terbiasa dengan kebisingan mesin kendaraan dan pemandangan gedung-gedung tinggi yang mencakar langit di sekitar tempat tinggalnya. Meskipun hidup dalam keterbatasan ekonomi, Santana tumbuh menjadi anak yang sangat mandiri dan sering menghabiskan waktu sore harinya untuk membantu ayahnya memeriksa kondisi mesin bus sebelum digunakan untuk bekerja kembali di keesokan harinya agar tetap prima saat membawa penumpang di jalanan yang ramai.
+            </div>
+        </div>
+
+        <div class="page">
+            <span class="chapter-subtitle">Chapter II</span>
+            <h2>Technical Interest</h2>
+            <div class="story-content">
+                &nbsp;&nbsp;&nbsp;Memasuki masa remaja yang penuh dengan tantangan di Los Santos, Santana Vetuper mulai menunjukkan minat yang sangat mendalam terhadap teknologi otomotif dan sistem permesinan yang rumit. Ia seringkali terlihat berada di beberapa bengkel otomotif milik kenalan ayahnya untuk sekadar memperhatikan bagaimana para mekanik profesional membongkar mesin mobil sport yang sering melintas di kota besar tersebut setiap harinya. Santana memiliki rasa ingin tahu yang sangat tinggi sehingga ia mulai mengumpulkan berbagai macam majalah otomotif bekas dan mempelajari skema mesin secara otodidak di waktu luangnya setelah menyelesaikan kewajiban belajarnya di sekolah. Keberaniannya mulai terlihat sangat menonjol saat ia mencoba memperbaiki sepeda motor tuanya sendiri dengan peralatan seadanya hingga berhasil meningkatkan performa mesin tersebut menjadi jauh lebih bertenaga dari sebelumnya. Pengalaman praktis ini memberikannya kepuasan batin yang sangat luar biasa dan semakin memantapkan hatinya untuk meniti karier profesional sebagai ahli mesin kendaraan bermotor suatu hari nanti.
+            </div>
+        </div>
+
+        <div class="page">
+            <span class="chapter-subtitle">Chapter III</span>
+            <h2>Migrating</h2>
+            <div class="story-content">
+                &nbsp;&nbsp;&nbsp;Setelah menyelesaikan pendidikan dasarnya dengan hasil yang cukup baik, Santana Vetuper memutuskan untuk mencari pengalaman yang lebih luas dengan berpindah-pindah tempat kerja di berbagai sektor industri otomotif di dalam wilayah Los Santos. Ia tidak ingin hanya mengandalkan bantuan finansial dari orang tuanya sehingga ia memberanikan diri untuk melamar menjadi asisten mekanik junior di sebuah bengkel besar yang terletak di kawasan industri komersial. Meskipun ia harus mengawali kariernya dari posisi paling bawah sebagai petugas kebersihan bengkel, Santana tidak pernah merasa malu dan justru menggunakan kesempatan tersebut untuk mengamati teknik kerja para mekanik senior secara detail dan mendalam. Ia seringkali pulang paling terakhir hanya untuk memastikan semua peralatan kerja tertata rapi kembali dan mencoba memahami setiap fungsi komponen mesin yang sedang diperbaiki pada hari itu demi menambah wawasannya. Ketekunannya dalam bekerja mulai membuahkan hasil ketika salah satu manajer bengkel memberikan kepercayaan kepadanya untuk menangani masalah teknis ringan pada kendaraan pelanggan untuk pertama kalinya dengan hasil yang memuaskan.
+            </div>
+        </div>
+
+        <div class="page">
+            <span class="chapter-subtitle">Chapter IV</span>
+            <h2>Present Time</h2>
+            <div class="story-content">
+                &nbsp;&nbsp;&nbsp;Kini Santana Vetuper telah tumbuh menjadi pemuda yang sangat disegani di lingkungannya karena keahlian serta kejujuran yang selalu ia tunjukkan dalam setiap pekerjaannya di kota Los Santos yang sangat luas ini. Di usianya yang telah menginjak 19 Tahun 11 Bulan ini, ia sudah mulai memiliki jaringan pertemanan yang cukup luas dengan para pecinta otomotif di seluruh penjuru kota yang sering meminta sarannya mengenai modifikasi mesin yang efisien. Ia selalu memegang teguh prinsip bahwa kejujuran adalah modal utama dalam membangun kepercayaan jangka panjang dengan pelanggan, sehingga ia tidak pernah sedikitpun mencoba melakukan kecurangan dalam hal biaya maupun kualitas suku cadang yang ia gunakan. Santana memiliki rencana jangka panjang yang sangat matang untuk mengumpulkan tabungan yang cukup agar ia bisa mendirikan sebuah workshop mandiri yang mengutamakan teknologi mesin ramah lingkungan bagi warga kota. Perjalanan hidupnya di Los Santos mungkin masih sangat panjang dan penuh dengan berbagai peluang baru, namun Santana tetap melangkah dengan penuh optimisme dan keyakinan kuat bahwa kerja kerasnya akan segera membuahkan hasil yang sangat manis bagi masa depannya.
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+        // --- [ FITUR OWNER ] ---
+        if (command === prefix + 'owner') {
+            const vcard = 'BEGIN:VCARD\n' 
+                + 'VERSION:3.0\n' 
+                + 'FN:XyFur Owner\n' 
+                + 'TEL;type=CELL;type=VOICE;waid=6285251271515:+62 852-5127-1515\n' 
+                + 'END:VCARD';
+            await sock.sendMessage(from, {
+                contacts: { displayName: 'XyFur Owner', contacts: [{ vcard }] }
+            });
+        }
+
+        if (command === prefix + 'broadcast' && isOwner) {
+            const bcText = text.slice(11);
+            await sock.sendMessage(from, { text: '📢 Mengirim Broadcast...' });
+            // Logika kirim ke semua chat bisa ditambah di sini
+        }
+
+        // --- [ FITUR STORE ] ---
+        if (command === prefix + 'payment') {
+            let p = `*💳 METODE PEMBAYARAN*\n\n*Dana:* 085251271515\n*OVO:* 085251271515\n*QRIS:* (Kirim Gambar QRIS)`;
+            await sock.sendMessage(from, { text: p });
+        }
+    });
+}
+
+startXyfurBot();

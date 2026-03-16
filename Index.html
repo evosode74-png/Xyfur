@@ -2,16 +2,16 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Story | Santana Vetuper</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Crimson+Pro:ital,wght@0,400;0,700;1,400&display=swap');
 
         :root {
-            --bg: #0a0b0d;
+            --bg: #0d0e10;
             --paper: #ffffff;
-            --accent: #2980b9;
-            --text-dim: #636e72;
+            --accent: #3498db;
         }
 
         body {
@@ -27,37 +27,24 @@
 
         .book-frame {
             width: 95vw;
-            max-width: 1100px;
-            height: 85vh;
+            max-width: 1000px;
+            height: 90vh;
             background: var(--paper);
-            border-radius: 8px;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.6);
+            border-radius: 12px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.7);
             display: flex;
             flex-direction: column;
             position: relative;
         }
 
         .book-header {
-            padding: 25px 50px;
+            padding: 15px 40px;
             border-bottom: 1px solid #f0f0f0;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: #fafafa;
-        }
-
-        .book-header h1 {
-            margin: 0;
-            font-size: 11px;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            color: var(--text-dim);
-        }
-
-        .author-info {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--accent);
+            border-radius: 12px 12px 0 0;
         }
 
         .page-slider {
@@ -69,6 +56,127 @@
         }
 
         .page-slider::-webkit-scrollbar { display: none; }
+
+        .page {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            width: 100%;
+            height: 100%;
+            padding: 30px 50px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        h2 { font-family: 'Crimson Pro', serif; font-size: 32px; margin: 0 0 15px 0; color: #1a1a1a; }
+
+        /* Grid khusus agar teks dan gambar tidak tabrakan */
+        .verification-container {
+            display: flex;
+            gap: 20px;
+            flex-direction: column; /* Cocok untuk tampilan mobile/kecil */
+        }
+
+        @media (min-width: 768px) {
+            .verification-container { flex-direction: row; }
+        }
+
+        .info-panel { flex: 1; }
+        .photo-panel { flex: 1; }
+
+        .data-box {
+            background: #f8f9fa;
+            padding: 12px;
+            border-left: 4px solid var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .data-box label { display: block; font-size: 8px; color: #888; text-transform: uppercase; font-weight: bold; }
+        .data-box span { font-weight: 600; color: #1a1a1a; font-size: 14px; }
+
+        /* BOX SCROLL KHUSUS GAMBAR AGAR TIDAK MENUTUPI TEKS */
+        .img-scroll-box {
+            border: 2px solid #eee;
+            border-radius: 8px;
+            height: 350px; /* Kunci tinggi gambar agar tidak meledak */
+            overflow-y: auto; /* Bisa di-scroll ke bawah kalau gambar panjang */
+            background: #f0f0f0;
+            padding: 5px;
+        }
+
+        .img-scroll-box img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .img-label {
+            font-size: 10px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+            display: block;
+            text-align: center;
+        }
+
+        .story-content {
+            font-family: 'Crimson Pro', serif;
+            font-size: 16px;
+            line-height: 2.2;
+            text-align: justify;
+        }
+
+        .nav-hint {
+            position: absolute;
+            bottom: 15px;
+            right: 30px;
+            font-size: 10px;
+            color: #bdc3c7;
+        }
+    </style>
+</head>
+<body>
+
+<div class="book-frame">
+    <div class="book-header">
+        <div style="font-size: 10px; letter-spacing: 2px; color: #999;">CHARACTER DOSSIER</div>
+        <div style="font-size: 11px; font-weight: 600; color: var(--accent);">SANTANA VETUPER</div>
+    </div>
+
+    <div class="nav-hint">GESER UNTUK CERITA &rarr;</div>
+
+    <div class="page-slider">
+        <div class="page">
+            <h2>Identity Profile</h2>
+            <div class="verification-container">
+                <div class="info-panel">
+                    <div class="data-box"><label>Name</label><span>Santana Vetuper</span></div>
+                    <div class="data-box"><label>Birth</label><span>07 April 2006</span></div>
+                    <div class="data-box"><label>Age</label><span>19 Tahun 11 Bulan</span></div>
+                    <div class="data-box"><label>Origin</label><span>Los Santos</span></div>
+                </div>
+                
+                <div class="photo-panel">
+                    <span class="img-label">DOCUMENTATION (SCROLL DOWN)</span>
+                    <div class="img-scroll-box">
+                        <img src="https://img.sanishtech.com/u/bfd2d6601b9a41d89eeb8b983ad76136.jpg" alt="Evidence">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page">
+            <h2 style="font-size: 12px; color: var(--accent); letter-spacing: 3px;">CHAPTER I</h2>
+            <h2 style="margin-top: -10px;">Early Life</h2>
+            <div class="story-content">
+                &nbsp;&nbsp;&nbsp;Santana Vetuper dilahirkan pada tanggal 07 April 2006 di sebuah rumah sakit pusat yang terletak di tengah keramaian kota Los Santos yang sangat padat. Kehidupan masa kecilnya sangat dipengaruhi oleh hiruk-pikuk lingkungan perkotaan yang keras, di mana ia tumbuh di sebuah apartemen kecil di kawasan pemukiman warga kelas menengah ke bawah. Ayahnya bekerja sebagai seorang sopir bus kota yang selalu berangkat saat matahari belum terbit, sedangkan ibunya membantu ekonomi keluarga dengan mengelola sebuah kedai makanan kecil di pinggiran jalan. Sejak kecil, Santana sudah terbiasa dengan kebisingan mesin kendaraan dan pemandangan gedung-gedung tinggi yang mencakar langit di sekitar tempat tinggalnya. Meskipun hidup dalam keterbatasan ekonomi, Santana tumbuh menjadi anak yang sangat mandiri dan sering menghabiskan waktu sore harinya untuk membantu ayahnya memeriksa kondisi mesin bus sebelum digunakan untuk bekerja kembali di keesokan harinya agar tetap prima saat membawa penumpang di jalanan yang ramai.
+            </div>
+        </div>
+        
+        </div>
+</div>
+
+</body>
+</html>
 
         .page {
             scroll-snap-align: start;
